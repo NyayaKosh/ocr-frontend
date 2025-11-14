@@ -1,7 +1,6 @@
 [build]
 builder = "RAILPACK"
 buildCommand = "bun run build"
-watchPatterns = ["/frontned/**"]
 
 [deploy]
 runtime = "V2"
