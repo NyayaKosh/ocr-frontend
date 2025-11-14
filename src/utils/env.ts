@@ -10,4 +10,5 @@ export const Env = {
     DOCUMENT_SERVICE: process.env.DOCUMENT_SERVICE,
     API_BACKEND: process.env.API_BACKEND,
 
+    GOOGLE_LOGIN_REDIRECT: process.env.GOOGLE_LOGIN_REDIRECT
 }
