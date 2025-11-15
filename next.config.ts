@@ -5,9 +5,6 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["lh3.googleusercontent.com", "http://localhost:3000"],
   },
-  experimental: {
-    optimizeCss: false,
-  }
 };
 
 export default nextConfig;
