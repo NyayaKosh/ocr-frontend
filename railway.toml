@@ -1,10 +1,10 @@
 [build]
 builder = "RAILPACK"
-buildCommand = "bun run build"
+buildCommand = "npm run build"
 
 [deploy]
 runtime = "V2"
-startCommand = "bun run start"
+startCommand = "npm run start"
 numReplicas = 1
 sleepApplication = false
 restartPolicyType = "ON_FAILURE"
