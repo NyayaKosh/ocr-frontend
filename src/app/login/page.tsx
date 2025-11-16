@@ -19,8 +19,7 @@ export default function LoginPage() {
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: "google",
                 options: {
-                    redirectTo: `${window.location.origin}/auth/callback`,
-                    skipBrowserRedirect: true,
+                    redirectTo: `https://ocr.nyayakosh.com/auth/callback`,
                 },
             });
 
