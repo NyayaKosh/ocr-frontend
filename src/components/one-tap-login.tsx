@@ -4,6 +4,7 @@ import Script from "next/script";
 import { createClient } from "@/lib/supabase/client";
 import type { accounts, CredentialResponse } from "google-one-tap";
 import { useRouter } from "next/navigation";
+import { Env } from "@/utils/env";
 
 declare const google: { accounts: accounts };
 
@@ -40,7 +41,7 @@ const OneTapComponent = () => {
         }
 
         google.accounts.id.initialize({
-            client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+            client_id: Env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
             callback: async (response: CredentialResponse) => {
                 try {
                     const { data, error } =
@@ -54,7 +55,6 @@ const OneTapComponent = () => {
                     console.log("Session data: ", data);
                     console.log("Successfully logged in with Google One Tap");
 
-                    // redirect to protected page
                     router.push("/");
                 } catch (error) {
                     console.error(
@@ -64,7 +64,6 @@ const OneTapComponent = () => {
                 }
             },
             nonce: hashedNonce,
-            // with chrome's removal of third-party cookies, we need to use FedCM instead (https://developers.google.com/identity/gsi/web/guides/fedcm-migration)
             use_fedcm_for_prompt: true,
         });
         google.accounts.id.prompt();
