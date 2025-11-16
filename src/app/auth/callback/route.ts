@@ -5,7 +5,6 @@ import { NextResponse, NextRequest } from "next/server";
 export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const code = url.searchParams.get("code");
-    // const nextParam = url.searchParams.get("next") ?? "/";
 
     const response = NextResponse.redirect(Env.GOOGLE_LOGIN_REDIRECT);
 
@@ -16,5 +15,5 @@ export async function GET(request: NextRequest) {
             return response
         }
     }
-    return NextResponse.redirect('/login?error=callback_error');
+    return NextResponse.redirect(new URL('/login?error=callback_error', request.url));
 }
