@@ -4,6 +4,13 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 export function createClient(): SupabaseClient {
+    // Validate environment variables
+    if (!Env.SUPABASE_URL || !Env.SUPABASE_ANON_KEY) {
+        throw new Error(
+            "Missing Supabase environment variables. Please set SUPABASE_URL and SUPABASE_ANON_KEY in Railway."
+        );
+    }
+
     // cookies() may be synchronous (Node) OR a Promise (Edge)
     const cookieStoreOrPromise = cookies();
 

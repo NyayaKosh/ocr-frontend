@@ -1,6 +1,6 @@
 [build]
 builder = "RAILPACK"
-buildCommand = "bun run build"
+buildCommand = "NEXT_BUILDER=webpack bun run build"
 
 [deploy]
 runtime = "V2"
