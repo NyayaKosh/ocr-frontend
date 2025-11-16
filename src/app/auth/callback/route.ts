@@ -1,12 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
-import { Env } from "@/utils/env";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const code = url.searchParams.get("code");
 
-    const response = NextResponse.redirect(Env.GOOGLE_LOGIN_REDIRECT);
+    const response = NextResponse.redirect(request.nextUrl.origin);
 
     if (code) {
         const supabase = createClient();
