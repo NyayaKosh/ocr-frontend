@@ -21,7 +21,7 @@ export class APIError extends Error {
 
 
 export async function fetchData<T>({ url }: FetchParamType): Promise<T> {
-    const response = await fetch(`${Env.API_BACKEND}${url}`, {
+    const response = await fetch(`${Env.NEXT_PUBLIC_DOCUMENT_SERVICE}${url}`, {
         credentials: "include",
         headers: {
             "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export async function mutateData<T>(params: MutateParamType): Promise<T> {
     }
 
     try {
-        const endpoint = `${Env.API_BACKEND}${url}`
+        const endpoint = `${Env.NEXT_PUBLIC_DOCUMENT_SERVICE}${url}`
 
         const response = await fetch(endpoint, {
             method,
