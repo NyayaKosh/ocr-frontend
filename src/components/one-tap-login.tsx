@@ -29,7 +29,6 @@ const OneTapComponent = () => {
 
     const initializeGoogleOneTap = async () => {
         const [nonce, hashedNonce] = await generateNonce();
-        console.log("Nonce: ", nonce, hashedNonce);
 
         const { data, error } = await supabase.auth.getSession();
         if (error) {
@@ -44,23 +43,16 @@ const OneTapComponent = () => {
             client_id: Env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
             callback: async (response: CredentialResponse) => {
                 try {
-                    const { data, error } =
-                        await supabase.auth.signInWithIdToken({
-                            provider: "google",
-                            token: response.credential,
-                            nonce,
-                        });
+                    const { error } = await supabase.auth.signInWithIdToken({
+                        provider: "google",
+                        token: response.credential,
+                        nonce,
+                    });
 
                     if (error) throw error;
-                    console.log("Session data: ", data);
-                    console.log("Successfully logged in with Google One Tap");
-
                     router.push("/");
-                } catch (error) {
-                    console.error(
-                        "Error logging in with Google One Tap",
-                        error
-                    );
+                } catch {
+                    console.error("Error logging in with Google One Tap");
                 }
             },
             nonce: hashedNonce,
