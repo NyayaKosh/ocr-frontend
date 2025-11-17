@@ -18,6 +18,10 @@ export async function GET(request: Request) {
 
     if (code) {
         const supabase = createClient()
+
+        console.log('[Supabase] Supabase client : ', supabase);
+
+
         console.log('[Auth Callback] Exchanging code for session')
         const { error } = await supabase.auth.exchangeCodeForSession(code)
 
