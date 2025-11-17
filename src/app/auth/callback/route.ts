@@ -3,11 +3,17 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url)
+
+    console.log("oriign ", origin);
+
     const code = searchParams.get('code')
     let next = searchParams.get('next') ?? '/'
     if (!next.startsWith('/')) {
         next = '/'
     }
+
+    console.log(request.headers.get('x-forwarded-host'));
+
     if (code) {
         const supabase = createClient()
         const { error } = await supabase.auth.exchangeCodeForSession(code)
@@ -23,5 +29,8 @@ export async function GET(request: Request) {
         }
         }
     }
+
+    console.log(`${origin}/auth/auth-code-error`);
+
     return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 }

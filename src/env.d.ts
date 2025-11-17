@@ -14,7 +14,7 @@ declare namespace NodeJS {
 
         DOCUMENT_SERVICE: string
         API_BACKEND: string
-
+        NEXT_PUBLIC_SITE_URL: string
         GOOGLE_LOGIN_REDIRECT: string
     }
 }
