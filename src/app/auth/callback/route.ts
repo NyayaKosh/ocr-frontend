@@ -24,11 +24,11 @@ export async function GET(request: Request) {
 
         console.log('[Auth Callback] Exchanging code for session')
         const { error } = await supabase.auth.exchangeCodeForSession(code)
-
+        console.log("[AuthError] login error ", error)
         if (!error) {
             console.log('[Auth Callback] Session exchange successful, redirecting to:', next)
             const forwardedHost = request.headers.get('x-forwarded-host')
-            const isLocalEnv = process.env.NODE_ENV === 'development'
+            const isLocalEnv = Env.NODE_ENV === 'development'
 
             if (isLocalEnv) {
                 console.log('[Auth Callback] Local environment detected')

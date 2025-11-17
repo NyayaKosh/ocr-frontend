@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Loader2, Shield } from "lucide-react";
 import Image from "next/image";
+import { Env } from "@/utils/env";
 
 export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const supabase = createClient();
+    const { NEXT_PUBLIC_SITE_URL } = Env;
 
     async function handleGoogleLogin() {
         setLoading(true);
@@ -19,7 +21,7 @@ export default function LoginPage() {
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: "google",
                 options: {
-                    redirectTo: `https://ocr.nyayakosh.com/auth/callback`,
+                    redirectTo: `${NEXT_PUBLIC_SITE_URL}/auth/callback`,
                 },
             });
 

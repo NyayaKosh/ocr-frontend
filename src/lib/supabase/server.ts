@@ -4,22 +4,21 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 export function createClient(): SupabaseClient {
-    if (!Env.SUPABASE_URL || !Env.SUPABASE_ANON_KEY) {
+    const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY } = Env
+
+    if (!Env.NEXT_PUBLIC_SUPABASE_URL || !NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
         console.error('[Supabase] Missing environment variables');
         throw new Error(
             "Missing Supabase environment variables. Please set SUPABASE_URL and SUPABASE_ANON_KEY in Railway."
         );
     }
+    console.log('[Supabase] Creating server client with URL:', NEXT_PUBLIC_SUPABASE_URL);
 
-    console.log('[Supabase] Creating server client with URL:', Env.SUPABASE_URL);
-
-    // cookies() may be synchronous (Node) OR a Promise (Edge)
     const cookieStoreOrPromise = cookies();
     console.log('[Supabase] Cookie store type:', cookieStoreOrPromise instanceof Promise ? 'Promise' : 'Sync');
 
-    console.log('[Supabase Env] Env ', Env.SUPABASE_URL,
-        Env.SUPABASE_ANON_KEY)
-    // Normalize both cases into a Promise
+    console.log('[Supabase Env] Env ', NEXT_PUBLIC_SUPABASE_URL,
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY)
     async function getCookieStore() {
         return cookieStoreOrPromise instanceof Promise
             ? await cookieStoreOrPromise
@@ -27,8 +26,8 @@ export function createClient(): SupabaseClient {
     }
 
     return createServerClient(
-        Env.SUPABASE_URL,
-        Env.SUPABASE_ANON_KEY,
+        NEXT_PUBLIC_SUPABASE_URL,
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
         {
             cookies: {
                 getAll: async () => {
