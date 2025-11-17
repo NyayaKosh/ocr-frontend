@@ -1,11 +1,14 @@
 import { createClient } from "@/lib/supabase/server";
+import { Env } from "@/utils/env";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-    const { searchParams, origin } = new URL(request.url)
+    const { searchParams } = new URL(request.url)
 
     const code = searchParams.get('code')
     let next = searchParams.get('next') ?? '/'
+
+    const origin = Env.NEXT_PUBLIC_SITE_URL
 
     console.log('[Auth Callback] Request received', { code: !!code, next, origin })
 
@@ -41,5 +44,5 @@ export async function GET(request: Request) {
     }
 
     console.log('[Auth Callback] Redirecting to error page')
-    return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+    return NextResponse.redirect(`${origin}/login/?error=auth-code-error`)
 }
