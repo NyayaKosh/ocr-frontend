@@ -9,7 +9,7 @@ export async function axiosClientServer() {
     if (!session) throw new Error("User session not found");
 
     const api = axios.create({
-        baseURL: Env.DOCUMENT_SERVICE,
+        baseURL: Env.NEXT_PUBLIC_DOCUMENT_SERVICE,
         headers: {
             Authorization: `Bearer ${session.access_token}`,
             "X-User-ID": session.user.id,
