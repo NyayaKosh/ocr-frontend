@@ -30,7 +30,7 @@ export default function NotFoundPage() {
                         404
                     </h1>
                     <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-                        We can't find the page you're looking for.
+                        We can&apos;t find the page you&apos;re looking for.
                     </p>
                     <p className="max-w-xl mx-auto text-sm text-gray-500 dark:text-gray-400 mb-6">
                         The link may be broken, the page may have moved, or it

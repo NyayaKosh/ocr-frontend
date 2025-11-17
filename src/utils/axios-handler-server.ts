@@ -4,8 +4,12 @@ import { Env } from "./env";
 
 export async function axiosClientServer() {
     const supabase = createClient();
-    const { data } = await supabase.auth.getSession();
-    const session = data?.session;
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData?.user;
+    if (!user) throw new Error("User not authenticated");
+    
+    const { data: sessionData } = await supabase.auth.getSession();
+    const session = sessionData?.session;
     if (!session) throw new Error("User session not found");
 
     const api = axios.create({

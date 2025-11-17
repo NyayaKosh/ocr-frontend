@@ -12,12 +12,14 @@ const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
     display: "swap",
+    preload: true,
 });
 
 const geistMono = Geist_Mono({
     variable: "--font-geist-mono",
     subsets: ["latin"],
     display: "swap",
+    preload: true,
 });
 
 export const metadata: Metadata = {
@@ -70,6 +72,13 @@ export const metadata: Metadata = {
     robots: {
         index: true,
         follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+        },
     },
     alternates: {
         canonical: "https://nyayakosh.com",
@@ -83,11 +92,19 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="scroll-smooth">
+            <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link
+                    rel="preconnect"
+                    href="https://fonts.gstatic.com"
+                    crossOrigin="anonymous"
+                />
+            </head>
             <body
                 className={cn(
                     geistSans.variable,
                     geistMono.variable,
-                    "antialiased bg-gradient-to-b from-white via-gray-50 to-gray-100 text-gray-900 min-h-screen flex flex-col"
+                    "antialiased bg-linear-to-b from-white via-gray-50 to-gray-100 text-gray-900 min-h-screen flex flex-col"
                 )}
             >
                 {/* Navbar */}
@@ -114,6 +131,7 @@ export default function RootLayout({
                                 alt="Nyayakosh"
                                 width={120}
                                 height={40}
+                                priority
                             />
                         </div>
                         <div className="">
@@ -135,7 +153,7 @@ export default function RootLayout({
                     }}
                 />
 
-                {/* Optional Schema Markup */}
+                {/* Schema Markup */}
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{

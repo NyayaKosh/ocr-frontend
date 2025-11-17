@@ -5,7 +5,9 @@
     "scripts": {
         "dev": "next dev --turbopack",
         "build": "NEXT_BUILDER=webpack next build",
+        "build:analyze": "NEXT_BUILDER=webpack ANALYZE=true next build",
         "start": "next start",
+        "start:prod": "NODE_ENV=production next start",
         "lint": "eslint"
     },
     "dependencies": {

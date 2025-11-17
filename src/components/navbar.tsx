@@ -21,12 +21,33 @@ const NAV_ROUTES = [
 
 export default async function CustomNavbar() {
     const supabase = createClient();
-    const session = await supabase.auth.getSession();
+    await supabase.auth.getUser(); // Verify user authenticity with the server
+    
+    const { data: sessionData, error } = await supabase.auth.getSession();
+
+    let sessionForComponent;
+    if (error) {
+        sessionForComponent = { data: { session: null }, error };
+    } else if (sessionData?.session) {
+        sessionForComponent = {
+            data: { session: sessionData.session },
+            error: null,
+        };
+    } else {
+        sessionForComponent = { data: { session: null }, error: null };
+    }
 
     return (
         <div className="container mx-auto flex justify-between items-center p-2">
             <div className="font-bold flex  gap-2 items-center text-xl text-primary">
-                <Image src="/logo.png" alt="Logo" width={140} height={140} />
+                <Link href={"/"}>
+                    <Image
+                        src="/logo.png"
+                        alt="Logo"
+                        width={140}
+                        height={140}
+                    />
+                </Link>
             </div>
 
             <div className="flex">
@@ -45,7 +66,7 @@ export default async function CustomNavbar() {
             </div>
 
             <div className="">
-                <NavbarUserSection session={session} />
+                <NavbarUserSection session={sessionForComponent} />
             </div>
         </div>
     );

@@ -30,11 +30,11 @@ const OneTapComponent = () => {
     const initializeGoogleOneTap = async () => {
         const [nonce, hashedNonce] = await generateNonce();
 
-        const { data, error } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getUser();
         if (error) {
-            console.error("Error getting session", error);
+            console.error("Error getting user", error);
         }
-        if (data.session) {
+        if (data.user) {
             router.push("/");
             return;
         }

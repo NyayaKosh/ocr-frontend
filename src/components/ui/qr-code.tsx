@@ -292,6 +292,7 @@ function QRCodeRoot(props: QRCodeRootProps) {
 
       return () => cancelAnimationFrame(rafId);
     }
+    return undefined;
   }, [generationKey, onQRCodeGenerate]);
 
   const RootPrimitive = asChild ? Slot : "div";
