@@ -88,45 +88,45 @@ const nextConfig: NextConfig = {
     };
   },
 
-  // Webpack optimizations
-  webpack: (config, { isServer }) => {
-    // Production optimizations
-    if (!isServer) {
-      config.optimization = {
-        ...config.optimization,
-        runtimeChunk: "single",
-        splitChunks: {
-          chunks: "all",
-          cacheGroups: {
-            react: {
-              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-              name: "react-vendors",
-              priority: 10,
-              reuseExistingChunk: true,
-            },
-            ui: {
-              test: /[\\/]node_modules[\\/](@radix-ui|lucide-react)[\\/]/,
-              name: "ui-vendors",
-              priority: 9,
-              reuseExistingChunk: true,
-            },
-            tanstack: {
-              test: /[\\/]node_modules[\\/]@tanstack[\\/]/,
-              name: "tanstack-vendors",
-              priority: 8,
-              reuseExistingChunk: true,
-            },
-            common: {
-              minChunks: 2,
-              priority: 5,
-              reuseExistingChunk: true,
-            },
-          },
-        },
-      };
-    }
-    return config;
-  },
+  // // Webpack optimizations
+  // webpack: (config, { isServer }) => {
+  //   // Production optimizations
+  //   if (!isServer) {
+  //     config.optimization = {
+  //       ...config.optimization,
+  //       runtimeChunk: "single",
+  //       splitChunks: {
+  //         chunks: "all",
+  //         cacheGroups: {
+  //           react: {
+  //             test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+  //             name: "react-vendors",
+  //             priority: 10,
+  //             reuseExistingChunk: true,
+  //           },
+  //           ui: {
+  //             test: /[\\/]node_modules[\\/](@radix-ui|lucide-react)[\\/]/,
+  //             name: "ui-vendors",
+  //             priority: 9,
+  //             reuseExistingChunk: true,
+  //           },
+  //           tanstack: {
+  //             test: /[\\/]node_modules[\\/]@tanstack[\\/]/,
+  //             name: "tanstack-vendors",
+  //             priority: 8,
+  //             reuseExistingChunk: true,
+  //           },
+  //           common: {
+  //             minChunks: 2,
+  //             priority: 5,
+  //             reuseExistingChunk: true,
+  //           },
+  //         },
+  //       },
+  //     };
+  //   }
+  //   return config;
+  // },
 
   // Enable experimental features for better performance
   experimental: {

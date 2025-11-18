@@ -17,11 +17,11 @@ export async function axiosClient() {
         "X-User-ID": session.user.id,
     }
 
-    const res = await axios.get(`${Env.NEXT_PUBLIC_DOCUMENT_SERVICE}/csrf`, { headers, withCredentials: true })
+    const { data } = await axios.get(`${Env.NEXT_PUBLIC_DOCUMENT_SERVICE}/csrf`, { headers, withCredentials: true })
 
     return axios.create({
         baseURL: Env.NEXT_PUBLIC_DOCUMENT_SERVICE,
-        headers: { ...headers, "X-CSRFToken": res.data?.csrfToken },
+        headers: { ...headers, "X-CSRFToken": data?.csrfToken },
         withCredentials: true,
     });
 }

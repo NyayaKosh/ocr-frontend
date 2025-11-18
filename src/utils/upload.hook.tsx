@@ -37,6 +37,8 @@ export default function useUploadFiles() {
                         "/ocr/upload",
                         formData,
                         {
+                            withXSRFToken: true,
+                            withCredentials: true,
                             onUploadProgress: (event) => {
                                 if (event.total) {
                                     const percent = Math.round(
