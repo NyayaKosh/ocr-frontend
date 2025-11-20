@@ -8,10 +8,21 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Label } from "@/components/ui/label";
 
 export default function DocumentTableSkeleton() {
     const columns = 8;
     const row = 9;
+
+    const header = [
+        "Id",
+        "Title",
+        "Stage",
+        "Processed",
+        "total_pages",
+        "uploaded_at",
+        "File",
+    ];
 
     return (
         <div className="w-full p-6">
@@ -21,7 +32,7 @@ export default function DocumentTableSkeleton() {
                         <TableRow>
                             {Array.from({ length: columns }).map((_, i) => (
                                 <TableHead key={i}>
-                                    <Skeleton className="h-8 w-full" />
+                                    <Label>{header[i]}</Label>
                                 </TableHead>
                             ))}
                         </TableRow>

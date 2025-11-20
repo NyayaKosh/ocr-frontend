@@ -15,12 +15,15 @@ import React from "react";
 import { CellContext } from "@tanstack/react-table";
 import { DocumentType } from "@/types/documets";
 import ConfirmDialog from "../confirm-dialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mutateData } from "@/utils/fetch-data";
 import toast from "react-hot-toast";
+import { QueryKeys } from "@/utils/QueryKeys";
+// import { revalidatePath } from "next/cache";
 
 export function DocumentAction(props: CellContext<DocumentType, unknown>) {
     const { pk, title } = props.row.original;
+    const client = useQueryClient();
 
     const { mutate } = useMutation({
         mutationFn: (id: number) => {
@@ -32,6 +35,8 @@ export function DocumentAction(props: CellContext<DocumentType, unknown>) {
         },
         onSuccess() {
             toast.success(`${title} is deleted successfully.`);
+            client.invalidateQueries({ queryKey: [QueryKeys.DOCUMENTS] });
+            // revalidatePath("/documents", "page");
         },
         onError() {
             toast.error(`Failed to delete ${title}`);
@@ -91,39 +96,70 @@ const DownloadFile = ({ row }: CellContext<DocumentType, unknown>) => {
 
             const client = await axiosClient();
 
-            const response = await client.get(
-                `/ocr/documents/${id}/download/`,
-                {
-                    responseType: "blob",
-                    onDownloadProgress: (event) => {
-                        if (event.total) {
-                            const percent = Math.round(
-                                (event.loaded * 100) / event.total
-                            );
-                            setProgress(percent);
-                        }
-                    },
-                }
+            // Step 1: Get the signed URL from the API
+            const urlResponse = await client.get(
+                `/ocr/documents/${id}/download/`
             );
 
-            const blob = new Blob([response.data]);
-            const url = window.URL.createObjectURL(blob);
+            // Check if file is available
+            if (urlResponse.status === 202) {
+                // File not available (still processing or deleted)
+                throw new Error(
+                    urlResponse.data.message ||
+                        "File is not available yet. Please try again later."
+                );
+            }
+
+            const { download_url, filename: serverFilename } = urlResponse.data;
+
+            if (!download_url) {
+                throw new Error("No download URL provided");
+            }
+
+            setProgress(25);
+
+            // Step 2: Download the file directly from the signed S3 URL
+            // Use fetch to download directly from S3 (bypasses CORS since it's a signed URL)
+            const fileResponse = await fetch(download_url, {
+                method: "GET",
+            });
+
+            if (!fileResponse.ok) {
+                if (fileResponse.status === 404) {
+                    throw new Error(
+                        "File not found in storage. It may have been deleted or not processed yet."
+                    );
+                }
+                throw new Error(
+                    `Download failed with status ${fileResponse.status}`
+                );
+            }
+
+            setProgress(75);
+            const blob = await fileResponse.blob();
+            setProgress(90);
+
+            // Step 3: Create download link
+            const blobUrl = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
-            link.href = url;
+            link.href = blobUrl;
 
-            const disposition = response.headers["content-disposition"];
-            const fileName =
-                disposition && disposition.includes("filename=")
-                    ? disposition.split("filename=")[1].replace(/"/g, "")
-                    : `${filename}.pdf`;
-
+            const fileName = serverFilename || `${filename}.pdf`;
             link.download = fileName;
             document.body.appendChild(link);
             link.click();
             link.remove();
-            window.URL.revokeObjectURL(url);
+            window.URL.revokeObjectURL(blobUrl);
+
+            setProgress(100);
+            toast.success("Download completed successfully!");
         } catch (error) {
             console.error("Download failed:", error);
+            const errorMessage =
+                error instanceof Error
+                    ? error.message
+                    : "Download failed. Please try again.";
+            toast.error(errorMessage);
         } finally {
             setDownloading(false);
             setProgress(0);
