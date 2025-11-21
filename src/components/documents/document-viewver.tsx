@@ -12,7 +12,7 @@ import { useFetchQuery } from "@/utils/query.hook";
 import { QueryKeys } from "@/utils/QueryKeys";
 import React from "react";
 import DownloadFile from "./document-download";
-import { FileText, Calendar, SquareArrowOutUpRightIcon, X } from "lucide-react";
+import { FileText, Calendar, SquareArrowOutUpRightIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function DocumentView({
