@@ -77,7 +77,6 @@ export default function UploadFiles() {
                         </div>
                     </FileUpload>
 
-                    {/* ✅ Fixed Bottom Action Bar */}
                     <AnimatePresence>
                         {files.length > 0 && (
                             <motion.div
@@ -146,6 +145,11 @@ export default function UploadFiles() {
                     </AnimatePresence>
                 </div>
             </FileUploadContext.Provider>
+
+            {/* <iframe
+                src="https://ftgzbbikyfkzsidvswig.storage.supabase.co/storage/v1/s3/ocr-testing/documents/d.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=eaa0c54e40e2a25978204c7adca14f5c%2F20251121%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20251121T004557Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d66c0b8ca42f79b5ac999bb3a0068cf0d2355a416b42cd7fade6a3c8a081f415"
+                className="w-full h-screen"
+            ></iframe> */}
 
             <FileProgress
                 callback={() => setUploadedFileId(null)}
